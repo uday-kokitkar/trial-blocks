@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"title": "Tab",
+	"description": "A Tab Block",
+	"textdomain": "tenup-theme",
+	"name": "trial/tab",
+	"icon": "button",
+	"category": "formatting",
+	"parent": ["trial/tabs"],
+	"attributes":{
+	  "tabTitle": {
+		"type" : "string",
+		"default": "New Tab"
+	  }
+	},
+	"supports": {
+	  "html": false
+	},
+	"editorScript": "file:./index.js",
+	"style": "file:./style.css",
+	"editorStyle": "file:./editorStyle.css"
+  }
+  
