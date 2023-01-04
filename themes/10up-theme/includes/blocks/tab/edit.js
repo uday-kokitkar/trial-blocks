@@ -20,7 +20,7 @@ const TabBlockEdit = (props) => {
 
 	const blockProps = useBlockProps();
 
-	const MY_TEMPLATE = [
+	const TAB_TEMPLATE = [
 		[
 			'core/paragraph',
 			{
@@ -33,7 +33,7 @@ const TabBlockEdit = (props) => {
 
 	return (
 		<div {...blockProps} className={classnames('trial-tab-content', { active: selected })}>
-			<InnerBlocks template={MY_TEMPLATE} />
+			<InnerBlocks template={TAB_TEMPLATE} />
 		</div>
 	);
 };

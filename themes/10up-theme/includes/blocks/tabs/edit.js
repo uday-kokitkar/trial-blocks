@@ -45,13 +45,14 @@ const TabsBlockEdit = (props) => {
 	}, [tabs]);
 
 	useEffect(() => {
-		// console.log( 'updated currentTabId', currentTabId );
 		tabs.forEach(function (tab) {
 			dispatch('core/block-editor').updateBlockAttributes(tab.clientId, {
 				selected: tab.clientId === currentTabId,
 			});
 		});
 	}, [currentTabId, tabs]);
+
+	const TABS_TEMPLATE = [['trial/tab'], ['trial/tab'], ['trial/tab']];
 
 	return (
 		<div {...blockProps}>
@@ -76,10 +77,10 @@ const TabsBlockEdit = (props) => {
 					);
 				})}
 			</ul>
-			<InnerBlocks allowedBlocks={['trial/tab']} />
+			<InnerBlocks template={TABS_TEMPLATE} allowedBlocks={['trial/tab']} />
 		</div>
 	);
 };
 export default TabsBlockEdit;
 
-// Next: Current tab selection.
+// Next: Styling for the editor.
