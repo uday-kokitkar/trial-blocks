@@ -10,18 +10,30 @@ import classnames from 'classnames';
  * Edit component.
  * See https://wordpress.org/gutenberg/handbook/designers-developers/developers/block-api/block-edit-save/#edit
  *
+ * @param {object} props The block props.
+ *
  * @returns {Function} Render the edit screen
  */
-const TabBlockEdit = () => {
+const TabBlockEdit = (props) => {
+	const { attributes } = props;
+	const { selected } = attributes;
+
 	const blockProps = useBlockProps();
 
-	const MY_TEMPLATE = [['core/paragraph', { placeholder: __('Tab content goes here') }]];
+	const MY_TEMPLATE = [
+		[
+			'core/paragraph',
+			{
+				placeholder: __(
+					'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+				),
+			},
+		],
+	];
 
 	return (
-		<div {...blockProps}>
-			<div className={classnames('trial-tabs-wrapper')}>
-				<InnerBlocks template={MY_TEMPLATE} />
-			</div>
+		<div {...blockProps} className={classnames('trial-tab-content', { active: selected })}>
+			<InnerBlocks template={MY_TEMPLATE} />
 		</div>
 	);
 };

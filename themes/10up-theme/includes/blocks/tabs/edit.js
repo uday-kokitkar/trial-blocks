@@ -4,6 +4,8 @@
 import { InnerBlocks, RichText, useBlockProps } from '@wordpress/block-editor';
 import { useSelect, dispatch } from '@wordpress/data';
 
+import { useState, useEffect } from '@wordpress/element';
+
 import classnames from 'classnames';
 
 /**
@@ -22,6 +24,8 @@ const TabsBlockEdit = (props) => {
 
 	const blockProps = useBlockProps();
 
+	const [currentTabId, setCurrentTabID] = useState(null);
+
 	const { tabs, tabTitles } = useSelect((select) => {
 		/**
 		 * As we allow only 'trial/tab' block, we expect to get all tab children.
@@ -33,12 +37,31 @@ const TabsBlockEdit = (props) => {
 		};
 	});
 
+	// Select the current tab first time.
+	useEffect(() => {
+		if (tabs.length) {
+			setCurrentTabID(tabs[0].clientId);
+		}
+	}, [tabs]);
+
+	useEffect(() => {
+		// console.log( 'updated currentTabId', currentTabId );
+		tabs.forEach(function (tab) {
+			dispatch('core/block-editor').updateBlockAttributes(tab.clientId, {
+				selected: tab.clientId === currentTabId,
+			});
+		});
+	}, [currentTabId, tabs]);
+
 	return (
 		<div {...blockProps}>
 			<ul className={classnames('trial-tabs-panel')}>
 				{tabTitles.map((value, index) => {
 					return (
-						<li key={tabs[index].clientId}>
+						<li
+							key={tabs[index].clientId}
+							onSelect={() => setCurrentTabID(tabs[index].clientId)}
+						>
 							<RichText
 								allowedFormats={[]}
 								value={value}

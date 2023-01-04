@@ -1,3 +1,4 @@
 {
-    "extends": ["@10up/eslint-config/wordpress"]
+    "extends": ["@10up/eslint-config/wordpress"],
+    "root": true
 }

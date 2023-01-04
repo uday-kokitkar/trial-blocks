@@ -1,3 +1,10 @@
 /**
  * Editor styling.
 */
+.trial-tab-content {
+	display: none;
+}
+
+.trial-tab-content.active {
+	display: block;
+}
