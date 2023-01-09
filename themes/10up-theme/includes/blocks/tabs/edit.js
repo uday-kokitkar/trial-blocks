@@ -21,7 +21,6 @@ import classnames from 'classnames';
  */
 const TabsBlockEdit = (props) => {
 	const { clientId, attributes, setAttributes } = props;
-
 	const { selectedTabId } = attributes;
 
 	const blockProps = useBlockProps();
@@ -37,9 +36,7 @@ const TabsBlockEdit = (props) => {
 		};
 	});
 
-	// console.log( 'selectedTabId', selectedTabId );
-
-	// Select the current tab first time.
+	// Select the current tab, first time.
 	useEffect(() => {
 		if (tabs.length) {
 			let currentTabId = selectedTabId;
@@ -49,14 +46,6 @@ const TabsBlockEdit = (props) => {
 			setAttributes({ selectedTabId: currentTabId });
 		}
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-	// useEffect(() => {
-	// 	tabs.forEach(function (tab) {
-	// 		dispatch('core/block-editor').updateBlockAttributes(tab.clientId, {
-	// 			selected: tab.clientId === currentTabId,
-	// 		});
-	// 	});
-	// }, [currentTabId, tabs]);
 
 	const TABS_TEMPLATE = [['trial/tab'], ['trial/tab'], ['trial/tab']];
 

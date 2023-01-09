@@ -17,19 +17,18 @@ import classnames from 'classnames';
  */
 const TabBlockEdit = (props) => {
 	const { clientId, attributes, setAttributes } = props;
-
 	const { tabId } = attributes;
 
+	// For the first time, if tabId is not set, use the clientId.
 	if (!tabId) {
 		setAttributes({ tabId: clientId });
 	}
 
 	const blockProps = useBlockProps();
 
+	// Get parent, that is 'Tabs' block and its attributes.
 	const parent = select('core/block-editor').getBlockParents(clientId);
-
 	const parentClientId = parent[0];
-
 	const { parentProps } = useSelect((select) => {
 		if (parentClientId) {
 			return {
@@ -41,6 +40,7 @@ const TabBlockEdit = (props) => {
 
 	const { selectedTabId } = parentProps ?? '';
 
+	// The default template for a new tab.
 	const TAB_TEMPLATE = [
 		[
 			'core/paragraph',
