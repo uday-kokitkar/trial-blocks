@@ -10,6 +10,9 @@
 	"attributes":{
 	  "tabs": {
 		"type" : "array"
+	  },
+	  "selectedTabId": {
+		"type": "string"
 	  }
 	},
 	"supports": {

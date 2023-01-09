@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { select, useSelect } from '@wordpress/data';
 import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
 
 import classnames from 'classnames';
@@ -15,24 +16,39 @@ import classnames from 'classnames';
  * @returns {Function} Render the edit screen
  */
 const TabBlockEdit = (props) => {
-	const { attributes } = props;
-	const { selected } = attributes;
+	const { clientId } = props;
 
 	const blockProps = useBlockProps();
+
+	const parent = select('core/block-editor').getBlockParents(clientId);
+
+	const parentClientId = parent[0];
+
+	const { parentProps } = useSelect((select) => {
+		if (parentClientId) {
+			return {
+				parentProps: select('core/block-editor').getBlockAttributes(parentClientId),
+			};
+		}
+		return null;
+	});
+
+	const { selectedTabId } = parentProps ?? '';
 
 	const TAB_TEMPLATE = [
 		[
 			'core/paragraph',
 			{
-				placeholder: __(
-					'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-				),
+				placeholder: __('Tab content.'),
 			},
 		],
 	];
 
 	return (
-		<div {...blockProps} className={classnames('trial-tab-content', { active: selected })}>
+		<div
+			{...blockProps}
+			className={classnames('trial-tab-content', { active: clientId === selectedTabId })}
+		>
 			<InnerBlocks template={TAB_TEMPLATE} />
 		</div>
 	);

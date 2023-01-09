@@ -12,10 +12,6 @@
 	  "tabTitle": {
 		"type" : "string",
 		"default": "New Tab"
-	  },
-	  "selected": {
-		"type": "boolean",
-		"default": false
 	  }
 	},
 	"supports": {

@@ -4,7 +4,7 @@
 import { InnerBlocks, RichText, useBlockProps } from '@wordpress/block-editor';
 import { useSelect, dispatch } from '@wordpress/data';
 
-import { useState, useEffect } from '@wordpress/element';
+import { useEffect } from '@wordpress/element';
 
 import classnames from 'classnames';
 
@@ -20,11 +20,11 @@ import classnames from 'classnames';
  * @returns {Function} Render the edit screen
  */
 const TabsBlockEdit = (props) => {
-	const { clientId } = props;
+	const { clientId, attributes, setAttributes } = props;
+
+	const { selectedTabId } = attributes;
 
 	const blockProps = useBlockProps();
-
-	const [currentTabId, setCurrentTabID] = useState(null);
 
 	const { tabs, tabTitles } = useSelect((select) => {
 		/**
@@ -37,20 +37,26 @@ const TabsBlockEdit = (props) => {
 		};
 	});
 
+	// console.log( 'selectedTabId', selectedTabId );
+
 	// Select the current tab first time.
 	useEffect(() => {
 		if (tabs.length) {
-			setCurrentTabID(tabs[0].clientId);
+			let currentTabId = selectedTabId;
+			if (!tabs.find((tab) => tab.clientId === selectedTabId)) {
+				currentTabId = tabs[0].clientId;
+			}
+			setAttributes({ selectedTabId: currentTabId });
 		}
-	}, [tabs]);
+	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-	useEffect(() => {
-		tabs.forEach(function (tab) {
-			dispatch('core/block-editor').updateBlockAttributes(tab.clientId, {
-				selected: tab.clientId === currentTabId,
-			});
-		});
-	}, [currentTabId, tabs]);
+	// useEffect(() => {
+	// 	tabs.forEach(function (tab) {
+	// 		dispatch('core/block-editor').updateBlockAttributes(tab.clientId, {
+	// 			selected: tab.clientId === currentTabId,
+	// 		});
+	// 	});
+	// }, [currentTabId, tabs]);
 
 	const TABS_TEMPLATE = [['trial/tab'], ['trial/tab'], ['trial/tab']];
 
@@ -61,7 +67,7 @@ const TabsBlockEdit = (props) => {
 					return (
 						<li
 							key={tabs[index].clientId}
-							onSelect={() => setCurrentTabID(tabs[index].clientId)}
+							onSelect={() => setAttributes({ selectedTabId: tabs[index].clientId })}
 						>
 							<RichText
 								allowedFormats={[]}
