@@ -16,7 +16,13 @@ import classnames from 'classnames';
  * @returns {Function} Render the edit screen
  */
 const TabBlockEdit = (props) => {
-	const { clientId } = props;
+	const { clientId, attributes, setAttributes } = props;
+
+	const { tabId } = attributes;
+
+	if (!tabId) {
+		setAttributes({ tabId: clientId });
+	}
 
 	const blockProps = useBlockProps();
 
@@ -47,7 +53,7 @@ const TabBlockEdit = (props) => {
 	return (
 		<div
 			{...blockProps}
-			className={classnames('trial-tab-content', { active: clientId === selectedTabId })}
+			className={classnames('trial-tab-content', { active: tabId === selectedTabId })}
 		>
 			<InnerBlocks template={TAB_TEMPLATE} />
 		</div>

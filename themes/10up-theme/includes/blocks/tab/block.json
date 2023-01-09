@@ -12,6 +12,9 @@
 	  "tabTitle": {
 		"type" : "string",
 		"default": "New Tab"
+	  },
+	  "tabId": {
+		"type": "string"
 	  }
 	},
 	"supports": {

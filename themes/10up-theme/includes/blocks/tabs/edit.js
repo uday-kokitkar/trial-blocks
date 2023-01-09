@@ -43,8 +43,8 @@ const TabsBlockEdit = (props) => {
 	useEffect(() => {
 		if (tabs.length) {
 			let currentTabId = selectedTabId;
-			if (!tabs.find((tab) => tab.clientId === selectedTabId)) {
-				currentTabId = tabs[0].clientId;
+			if (!tabs.find((tab) => tab.attributes.tabId === selectedTabId)) {
+				currentTabId = tabs[0].attributes.tabId;
 			}
 			setAttributes({ selectedTabId: currentTabId });
 		}
@@ -67,7 +67,9 @@ const TabsBlockEdit = (props) => {
 					return (
 						<li
 							key={tabs[index].clientId}
-							onSelect={() => setAttributes({ selectedTabId: tabs[index].clientId })}
+							onSelect={() =>
+								setAttributes({ selectedTabId: tabs[index].attributes.tabId })
+							}
 						>
 							<RichText
 								allowedFormats={[]}
