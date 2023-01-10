@@ -20,30 +20,24 @@ import classnames from 'classnames';
  * @returns {Function} Render the edit screen
  */
 const TabsBlockEdit = (props) => {
-	const { clientId, attributes, setAttributes } = props;
-	const { selectedTabId } = attributes;
+	const { clientId, setAttributes } = props;
 
 	const blockProps = useBlockProps();
 
-	const { tabs, tabTitles } = useSelect((select) => {
+	const { tabs } = useSelect((select) => {
 		/**
 		 * As we allow only 'trial/tab' block, we expect to get all tab children.
 		 */
 		const blocksList = select('core/block-editor').getBlocks(clientId);
 		return {
 			tabs: blocksList,
-			tabTitles: blocksList.map((b) => b.attributes.tabTitle),
 		};
 	});
 
-	// Select the current tab, first time.
+	// Select the first tab is selected for the first time.
 	useEffect(() => {
 		if (tabs.length) {
-			let currentTabId = selectedTabId;
-			if (!tabs.find((tab) => tab.attributes.tabId === selectedTabId)) {
-				currentTabId = tabs[0].attributes.tabId;
-			}
-			setAttributes({ selectedTabId: currentTabId });
+			setAttributes({ selectedTabId: tabs[0].attributes.tabId });
 		}
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -52,22 +46,19 @@ const TabsBlockEdit = (props) => {
 	return (
 		<div {...blockProps}>
 			<ul className={classnames('trial-tabs-panel')}>
-				{tabTitles.map((value, index) => {
+				{tabs.map((tab) => {
 					return (
 						<li
-							key={tabs[index].clientId}
-							onSelect={() =>
-								setAttributes({ selectedTabId: tabs[index].attributes.tabId })
-							}
+							key={tab.clientId}
+							onSelect={() => setAttributes({ selectedTabId: tab.attributes.tabId })}
 						>
 							<RichText
 								allowedFormats={[]}
-								value={value}
+								value={tab.attributes.tabTitle}
 								onChange={(value) => {
-									dispatch('core/editor').updateBlockAttributes(
-										tabs[index].clientId,
-										{ tabTitle: value },
-									);
+									dispatch('core/editor').updateBlockAttributes(tab.clientId, {
+										tabTitle: value,
+									});
 								}}
 							/>
 						</li>
